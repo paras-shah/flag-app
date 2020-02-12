@@ -13,23 +13,29 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      continentList: [],
-      selectedContinentIndex: -1,
-      selectedContinentCountryList: [],
-      selectedCountries: [],
-      selectedCountryFlags: null,
+      continentList: [], //  list of continent in an array
+      selectedContinentIndex: -1,// selected continent 
+      selectedContinentCountryList: [],// list of countries of selected continent
+      selectedCountries: [], // list of countries selected by user 
+      selectedCountryFlags: null,// list of flags selected by user 
     }
+
     this.clearFlags = this.clearFlags.bind(this);
   }
 
   componentDidMount() {
     if (flagData) {
+      /* setting continent on mount */
       const continentArray = this.getContinentList();
       this.setState({ continentList: continentArray });
     }
   }
 
-  // on
+  /* 
+    Functionality: It will update state of comp based on continent select
+    Input:Index of continent in continent array
+    Return: Update state
+  */
   onContinentSelect = (selectedValueIndex) => {
     // get country data
     const countryList = this.getContinentSpecificCountriesList(selectedValueIndex);
@@ -41,6 +47,11 @@ class App extends React.Component {
     });
   }
 
+  /* 
+    Functionality: It will update state of comp based on country select 
+    Input:Indexes of countries in 'selectedContinentCountryList' state array
+    Return: Update state - selectedCountries and selectedCountryFlags
+  */
   onCountrySelect = (selectedValueIndexes) => {
     // get map data
     let countriesFlags = null;
@@ -53,24 +64,34 @@ class App extends React.Component {
     });
   }
 
+  /* 
+    Functionality: It will clear selected countries and flags of comp  
+    Input:None
+    Return: Reset parts of state - selectedCountries and selectedCountryFlags
+  */
   clearFlags = () => {
-    // get map data
-    const countryList = this.state.selectedContinentCountryList;
     this.setState({
       selectedCountryFlags: null,
-      selectedContinentCountryList: countryList,
       selectedCountries:[]
     });
   }
 
-  // 
+  /* 
+    Functionality: To get an array of continents from json  
+    Input: None
+    Return: Reset parts of state - selectedCountries and selectedCountryFlags
+  */
   getContinentList = () => {
     return flagData.map((value) => {
       return value["continent"];
     });
   }
 
-  //
+  /* 
+    Functionality: To get an Countries list baed on continent from json  
+    Input: Continent Index works as key, 
+    Return:List of countries on that continent
+  */
   getContinentSpecificCountriesList = (continentIndex) => {
     const { countries } = flagData[continentIndex];
     return countries.map((value) => {
@@ -78,7 +99,11 @@ class App extends React.Component {
     });
   }
 
-  //
+   /* 
+    Functionality: To get flags list based on countries
+    Input: countries Index work as key, 
+    Return:List of flags of selected countries
+  */
   getSpecificFlags = (selectedValueIndexes) => {
     const continentIndex = this.state.selectedContinentIndex;
     const { countries } = flagData[continentIndex];
@@ -91,14 +116,16 @@ class App extends React.Component {
     });
   }
 
+  /* 
+    Functionality: To display flags list in DOM
+    Return: flags Html
+  */
   showFlags = () => {
     const selectedCountryFlags = this.state.selectedCountryFlags;
     return selectedCountryFlags.map((value, index) => {
       return (<li key={index}> {value}</li>);
     })
   }
-
-
 
 
   render() {
@@ -113,14 +140,15 @@ class App extends React.Component {
         </header>
 
         <div className="app-content">
-          {/* Continent */}
+          {/* Continent Select Column */}
           <section className="column">
             <h2 className="main-text">{COPY.COLUMN_ONE_HEADING}</h2>
             <h3 className="column-sub-text">{COPY.COLUMN_ONE_SUBTEXT} </h3>
 
             <Search values={this.state.continentList}
               className="continent-select"
-              onSelect={this.onContinentSelect}
+              onSelection={this.onContinentSelect}
+              label={COPY.COLUMN_ONE_SUBTEXT}
             />
 
             {selectedContinent &&
@@ -135,21 +163,22 @@ class App extends React.Component {
             }
           </section>
 
-          {/* Country */}
+          {/* Country Select Column  */}
           {selectedContinent &&
             <section className="column">
               <h2 className="main-text">{COPY.COLUMN_TWO_HEADING}</h2>
               <h3 className="column-sub-text">{COPY.COLUMN_TWO_SUBTEXT} </h3>
               <Search values={this.state.selectedContinentCountryList}
                 className="country-select"
-                onSelect={this.onCountrySelect}
+                onSelection={this.onCountrySelect}
                 multiSelect={true}
                 checkedValues={this.state.selectedCountries}
+                label={COPY.COLUMN_TWO_SUBTEXT}
               />
             </section>
           }
 
-          {/* Flag Column */}
+          {/* Displaying Flags */}
           {selectedCountryFlags &&
             <section className="column">
               <h2 className="main-text">{COPY.SELECTED_FLAGS}</h2>
