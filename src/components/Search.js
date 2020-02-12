@@ -113,9 +113,6 @@ class Search extends React.Component {
         if (e.keyCode === 13) {
             if (activePossibleValuesIndex > -1) {
                 this.onSelect(possibleValues[activePossibleValuesIndex]);
-                this.setState({
-                    activePossibleValuesIndex: -1
-                });
             }
         }
         else if (e.keyCode === 38) {
