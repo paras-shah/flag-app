@@ -32,7 +32,8 @@
 	cursor: pointer;
 }
 .search-box li:focus,
-.search-box li:hover {
+.search-box li:hover,
+.search-box li.focused {
 	background-color: #eee;
 }
 
