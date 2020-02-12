@@ -1,0 +1,14 @@
+ input {
+	width: 100%;
+	height: 50px;
+	border: solid 1px #ccc;
+	border-radius: 5px;
+	font-size: 20px;
+	line-height: 50px;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+input.conti-select{
+	margin:auto;
+}
